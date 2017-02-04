@@ -16,6 +16,12 @@ namespace UI {
 			GameLogic.m_type = GameLogic.TMT_TYPE.TMT_TYPE_B;
 			SceneManager.LoadScene (id);
 		}
+		public void Logout(int id) {
+			// process logout logic here
+
+			// go back to log in UI
+			SceneManager.LoadScene (id);
+		}
 #endregion
 	}
 }
