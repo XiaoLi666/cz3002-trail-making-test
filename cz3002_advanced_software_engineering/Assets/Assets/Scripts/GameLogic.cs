@@ -33,6 +33,11 @@ namespace Game {
 			TMT_TYPE_A,
 			TMT_TYPE_B
 		}
+
+		private GameObject m_prefabLine;
+		private Vector2 m_previousPosition = Vector2.zero;
+		List<GameObject> m_lineSegments = new List<GameObject>();
+
 #endregion
 
 #region override methods
@@ -61,18 +66,39 @@ namespace Game {
 			}
 
 			// Going to check the user input here:
-			for (var i = 0; i < Input.touchCount; ++i) {
-				if (Input.GetTouch(i).phase == TouchPhase.Began) {
-					Vector2 position_touched = Camera.main.ScreenToWorldPoint(Input.GetTouch(i).position);
-					foreach (GameObject circle in m_circleList) {
-						float distance = Vector2.Distance (circle.transform.position, position_touched);
-						if (distance < m_circleRadius) {
-							Analysis(circle);
-							break;
-						}
+			if (Input.GetTouch (0).phase == TouchPhase.Began) {
+				m_previousPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+			}
+
+			if (Input.GetTouch (0).phase == TouchPhase.Moved) {
+				m_prefabLine = Instantiate (m_linePrefab, Vector3.zero, m_linePrefab.transform.rotation) as GameObject; // this is the thing that is always being created
+				LineRenderer line_renderer = m_prefabLine.GetComponent<LineRenderer>();
+				Vector2 position_touched = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+
+				// Setting line renderer
+				line_renderer.SetPosition (0, m_previousPosition);
+				line_renderer.SetPosition (1, position_touched);
+				line_renderer.startWidth = 0.04f;
+				line_renderer.endWidth = 0.04f;
+
+				m_previousPosition = position_touched;
+
+				m_lineSegments.Add (m_prefabLine);
+
+				for (int c_idx = 0; c_idx < m_circleList.Count; ++ c_idx) {
+					float distance = Vector2.Distance (m_circleList[c_idx].transform.position, position_touched);
+					if (distance < m_circleRadius) {
+						HighlightCircle(m_circleList[c_idx]);
+						break;
 					}
 				}
 			}
+
+			//if (Input.GetTouch (0).phase == TouchPhase.Ended) {
+			//	for (int i = 0; i < m_lineSegments.Count; ++ i) {
+			//		UnityEngine.Object.DestroyImmediate (m_lineSegments [i]);
+			//	}
+			//}
 		}
 #endregion
 
@@ -168,19 +194,20 @@ namespace Game {
 			}
 		}
 
-		private void Analysis(GameObject circle) {
+		private void HighlightCircle(GameObject circle) {
 			if (circle == toura[m_tapIndex]) {
-				if (m_tapIndex >= 1) {
-					GameObject prefab_line = Instantiate (m_linePrefab, Vector3.zero, m_linePrefab.transform.rotation) as GameObject;
-					LineRenderer line_renderer = prefab_line.GetComponent<LineRenderer>();
-					line_renderer.SetPosition (0, toura [m_tapIndex - 1].transform.position);
-					line_renderer.SetPosition (1, toura [m_tapIndex].transform.position);
-					line_renderer.startWidth = 0.1f;
-					line_renderer.endWidth = 0.1f;
-				}
 				circle.GetComponent<Renderer>().material.color = new Color (130.0f,130.0f,0.0f,1.0f);
 				++m_tapIndex;
+				m_lineSegments.Clear ();
 			}
+
+			// Old version logic:
+			// GameObject prefab_line = Instantiate (m_linePrefab, Vector3.zero, m_linePrefab.transform.rotation) as GameObject;
+			// LineRenderer line_renderer = prefab_line.GetComponent<LineRenderer>();
+			// line_renderer.SetPosition (0, toura [m_tapIndex - 1].transform.position);
+			// line_renderer.SetPosition (1, toura [m_tapIndex].transform.position);
+			// line_renderer.startWidth = 0.1f;
+			// line_renderer.endWidth = 0.1f;
 		}
 #endregion
 	}
