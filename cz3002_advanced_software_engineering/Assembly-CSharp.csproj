@@ -49,6 +49,7 @@
      <Compile Include="Assets\Assets\Scripts\GameLogic.cs" />
      <Compile Include="Assets\Assets\Scripts\GameLoginUILogic.cs" />
      <Compile Include="Assets\Assets\Scripts\GameSelectionUILogic.cs" />
+     <Compile Include="Assets\Assets\Scripts\GameStatisticsUILogic.cs" />
      <Compile Include="Assets\Assets\Scripts\InGameUILogic.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

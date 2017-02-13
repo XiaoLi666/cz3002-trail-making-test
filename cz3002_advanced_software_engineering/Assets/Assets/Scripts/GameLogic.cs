@@ -18,13 +18,14 @@ namespace Game {
 		private int m_circleCounter; // normally, this counter should be 25
 		[SerializeField]
 		private float m_circleRadius;
+		[SerializeField]
+		private GameObject m_resultPanel;
 
 		private bool m_isInitialized = false;
 		private int m_tapIndex = 0;
 		private const float VERY_BIG_DIST = 10000.0f;
 		private List<GameObject> m_circleList = new List<GameObject>();
 		private List<GameObject> toura = new List<GameObject>();
-		private LinkedList<GameObject> m_circleLinkedList = new LinkedList<GameObject>(); // for generation use only
 		private string[] m_tmtTypeAList = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25"}; // But the calculation will be based on the circle counter
 		private string[] m_tmtTypeBList = {"1","A","2","B","3","C","4","D","5","E","6","F","7","G","8","H","9","I","10","J","11","K","12","L","13"};
 
@@ -37,6 +38,8 @@ namespace Game {
 		private GameObject m_prefabLine;
 		private Vector2 m_previousPosition = Vector2.zero;
 		List<GameObject> m_lineSegments = new List<GameObject>();
+		private double m_timer = 0.0f;
+		private bool m_complete = false;
 
 #endregion
 
@@ -53,7 +56,6 @@ namespace Game {
 				}
 				prefab_to_create = Instantiate (m_circlePrefab, random_position, m_circlePrefab.transform.rotation) as GameObject;
 				m_circleList.Add (prefab_to_create);
-				m_circleLinkedList.AddLast(prefab_to_create);
 			}
 			GenerateSequence();
 			m_isInitialized = true;
@@ -65,33 +67,44 @@ namespace Game {
 				return;
 			}
 
-			// Going to check the user input here:
-			if (Input.GetTouch (0).phase == TouchPhase.Began) {
-				m_previousPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-			}
+			if (m_complete == false) 
+				m_timer += Time.deltaTime;
 
-			if (Input.GetTouch (0).phase == TouchPhase.Moved) {
-				m_prefabLine = Instantiate (m_linePrefab, Vector3.zero, m_linePrefab.transform.rotation) as GameObject; // this is the thing that is always being created
-				LineRenderer line_renderer = m_prefabLine.GetComponent<LineRenderer>();
-				Vector2 position_touched = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+			if (Input.touchCount > 0) {
+				// Going to check the user input here:
+				if (Input.GetTouch (0).phase == TouchPhase.Began) {
+					m_previousPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+				}
 
-				// Setting line renderer
-				line_renderer.SetPosition (0, m_previousPosition);
-				line_renderer.SetPosition (1, position_touched);
-				line_renderer.startWidth = 0.04f;
-				line_renderer.endWidth = 0.04f;
+				if (Input.GetTouch (0).phase == TouchPhase.Moved) {
+					m_prefabLine = Instantiate (m_linePrefab, Vector3.zero, m_linePrefab.transform.rotation) as GameObject; // this is the thing that is always being created
+					LineRenderer line_renderer = m_prefabLine.GetComponent<LineRenderer>();
+					Vector2 position_touched = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 
-				m_previousPosition = position_touched;
+					// Setting line renderer
+					line_renderer.SetPosition (0, m_previousPosition);
+					line_renderer.SetPosition (1, position_touched);
+					line_renderer.startWidth = 0.04f;
+					line_renderer.endWidth = 0.04f;
 
-				m_lineSegments.Add (m_prefabLine);
+					m_previousPosition = position_touched;
+					m_lineSegments.Add (m_prefabLine);
 
-				for (int c_idx = 0; c_idx < m_circleList.Count; ++ c_idx) {
-					float distance = Vector2.Distance (m_circleList[c_idx].transform.position, position_touched);
-					if (distance < m_circleRadius) {
-						HighlightCircle(m_circleList[c_idx]);
-						break;
+					for (int c_idx = 0; c_idx < m_circleList.Count; ++ c_idx) {
+						float distance = Vector2.Distance (m_circleList[c_idx].transform.position, position_touched);
+						if (distance < m_circleRadius) {
+							HighlightCircle(m_circleList[c_idx]);
+							break;
+						}
 					}
 				}
+			}
+
+			if (m_tapIndex == m_circleCounter) {
+				m_resultPanel.SetActive (true);
+				Text result = m_resultPanel.transform.GetComponentInChildren<Text> ();
+				result.text = "            Time Used: " + m_timer.ToString("0.00") + " sec";
+				m_complete = true;
 			}
 
 			//if (Input.GetTouch (0).phase == TouchPhase.Ended) {
@@ -120,17 +133,6 @@ namespace Game {
 		private void SetTextForCircle(GameObject circle, string text) {
 			TextMesh tm = circle.GetComponentInChildren<TextMesh>();
 			tm.text = text;
-		}
-
-		private GameObject GetLinkedListItemByIndex(LinkedList<GameObject> ll, int index) {
-			int count = 0;
-			foreach (GameObject i in ll) {
-				if (count == index) {
-					return i;
-				}
-				count++;
-			}
-			return null;
 		}
 
 		// Using rubber-band algorithm
@@ -200,14 +202,6 @@ namespace Game {
 				++m_tapIndex;
 				m_lineSegments.Clear ();
 			}
-
-			// Old version logic:
-			// GameObject prefab_line = Instantiate (m_linePrefab, Vector3.zero, m_linePrefab.transform.rotation) as GameObject;
-			// LineRenderer line_renderer = prefab_line.GetComponent<LineRenderer>();
-			// line_renderer.SetPosition (0, toura [m_tapIndex - 1].transform.position);
-			// line_renderer.SetPosition (1, toura [m_tapIndex].transform.position);
-			// line_renderer.startWidth = 0.1f;
-			// line_renderer.endWidth = 0.1f;
 		}
 #endregion
 	}
