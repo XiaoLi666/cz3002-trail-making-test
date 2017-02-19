@@ -46,16 +46,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\ASStatisticsUIPack\Scripts\CircularProgressBar.cs" />
+     <Compile Include="Assets\ASStatisticsUIPack\Scripts\DemoScript.cs" />
+     <Compile Include="Assets\ASStatisticsUIPack\Scripts\HorizontalProgressBar.cs" />
+     <Compile Include="Assets\ASStatisticsUIPack\Scripts\Indicator.cs" />
+     <Compile Include="Assets\ASStatisticsUIPack\Scripts\ProgressElement.cs" />
+     <Compile Include="Assets\ASStatisticsUIPack\Scripts\VerticalProgressBar.cs" />
      <Compile Include="Assets\Assets\Scripts\Game\GameLogic.cs" />
+     <Compile Include="Assets\Assets\Scripts\Game\PlayerDataCollection.cs" />
      <Compile Include="Assets\Assets\Scripts\Network\HttpController.cs" />
      <Compile Include="Assets\Assets\Scripts\Network\NetworkManager.cs" />
-     <Compile Include="Assets\Assets\Scripts\Network\TestHttpConnection.cs" />
      <Compile Include="Assets\Assets\Scripts\Network\TmtResult.cs" />
      <Compile Include="Assets\Assets\Scripts\Network\User.cs" />
-     <Compile Include="Assets\Assets\Scripts\Player\PlayerDataCollection.cs" />
      <Compile Include="Assets\Assets\Scripts\UI\HUDManager.cs" />
      <Compile Include="Assets\Assets\Scripts\UI\InGameUILogic.cs" />
      <Compile Include="Assets\Assets\Scripts\UI\UIManager.cs" />
+     <None Include="Assets\ASStatisticsUIPack\Readme.txt" />
+     <None Include="Assets\ASStatisticsUIPack\Fonts\Quicksand\OFL.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

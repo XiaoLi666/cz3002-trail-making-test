@@ -53,7 +53,7 @@ namespace Network {
 			String responseString = response.Headers["responseString"];
 			Console.WriteLine("ResStr " + responseString);
 		}
-		*/
+
 		public ArrayList getAllResults(String nric) {
 			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 			request.Method = "POST";

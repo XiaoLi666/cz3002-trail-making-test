@@ -20,6 +20,8 @@ namespace Game {
 		private float m_circleRadius;
 		[SerializeField]
 		private GameObject m_resultPanel;
+		[SerializeField]
+		private Text m_resultValue;
 
 		private bool m_isInitialized = false;
 		private int m_tapIndex = 0;
@@ -102,8 +104,9 @@ namespace Game {
 
 			if (m_tapIndex == m_circleCounter) {
 				m_resultPanel.SetActive (true);
-				Text result = m_resultPanel.transform.GetComponentInChildren<Text> ();
-				result.text = "            Time Used: " + m_timer.ToString("0.00") + " sec";
+				//Text result = m_resultPanel.transform.GetComponentInChildren<Text> ();
+				//result.text = "            Time Used: " + m_timer.ToString("0.00") + " sec";
+				m_resultValue.text = m_timer.ToString("0.00");
 				m_complete = true;
 			}
 

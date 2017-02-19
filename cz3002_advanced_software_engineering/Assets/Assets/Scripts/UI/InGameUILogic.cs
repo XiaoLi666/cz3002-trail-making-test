@@ -10,8 +10,6 @@ namespace UI {
 		}
 
 		public void ResultPanelOk (int id) {
-			// TODO: save data into database
-			// http request to server
 			SceneManager.LoadScene (id);
 		}
 	}

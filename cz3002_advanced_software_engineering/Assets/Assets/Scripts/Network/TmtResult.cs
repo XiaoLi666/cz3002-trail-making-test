@@ -1,22 +1,21 @@
 ﻿using System.Collections;
+
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-using System.Linq;
-using System.Text;
 
-namespace Network {
+namespace Game {
 	public class TmtResult {
 		public static int TYPE_A = 0;
 		public static int TYPE_B = 1;
 		private string resultId;
 		private string nric;
-		private DateTime date;
+		private Time date;
 		private double errorRate;
 		private double timeTaken;
 		private int type;
 
-		public TmtResult(string resultId,string nric,DateTime date,double timeTaken,double errorRate,int type) {
+		public TmtResult(string resultId, string nric,Time date, double timeTaken, double errorRate, int type) {
 			this.resultId = resultId;
 			this.nric = nric;
 			this.date = date;
@@ -28,37 +27,48 @@ namespace Network {
 		public override string ToString() {
 			return resultId + "\t" + nric + "\t" + date + "\t" + timeTaken + "\t" + errorRate + "\t" + type;
 		}
+
 		public void setResultId(string resultId) {
 			this.resultId = resultId;
 		}
+
 		public string getResultId() {
 			return resultId;
 		}
+
 		public void setNric(string nric) {
 			this.nric = nric;
 		}
+
 		public string getNric() {
 			return nric;
 		}
-		public void setDate(DateTime date) {
+
+		public void setDate(Time date) {
 			this.date = date;
 		}
-		public DateTime getDate() {
+
+		public Time getDate() {
 			return date;
 		}
+
 		public void setErrorRate(double errorRate) {
 			this.errorRate = errorRate;
 
 		}
+
 		public double getErrorRate() {
 			return errorRate;
 		}
+
 		public void setTimeTaken(double timeTaken) {
 			this.timeTaken = timeTaken;
 		}
+
 		public double getTimeTaken() {
 			return timeTaken;
 		}
+
 		public void setType(int type) {
 			this.type = type;
 		}
@@ -68,8 +78,17 @@ namespace Network {
 		}
 
 		public static TmtResult parseResult(string x) {
+			if (x == "") return null;
+
 			string[] list = x.Split(':');
-			return new TmtResult(list[0],list[1],parseDateTime(list[2]), Double.Parse(list[3]),Double.Parse(list[4]),int.Parse(list[5]));
+			return new TmtResult(
+				list[0],
+				list[1],
+				parseDateTime(list[2]),
+				double.Parse(list[3]),
+				double.Parse(list[4]),
+				int.Parse(list[5])
+			);
 		}
 
 		public static ArrayList parseResultList(string x) {
@@ -82,9 +101,13 @@ namespace Network {
 
 		}
 
-		public static DateTime parseDateTime(string dateString) {
-			Console.WriteLine("Input string " + dateString);
-			return new DateTime(long.Parse(dateString));
+		public static Time parseDateTime(string dateString) {
+			// Console.WriteLine("Input string " + dateString);
+			long value = long.Parse(dateString);
+			DateTime dt = new DateTime (value);
+
+			return new Time(); // long.Parse(dateString)
+			// return new DateTime(long.Parse(dateString));
 		}
 	}
 }
