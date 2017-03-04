@@ -47,7 +47,11 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\ASStatisticsUIPack\Editor\ProgressElementEditor.cs" />
+     <Compile Include="Assets\UControls\Scripts\Attributes\Editor\EnumFieldDrawer.cs" />
+     <Compile Include="Assets\UControls\Scripts\Attributes\Editor\HelpHeaderDrawer.cs" />
+     <Compile Include="Assets\UControls\Scripts\Attributes\Editor\RegexCheckFieldDrawer.cs" />
      <None Include="Assets\ASStatisticsUIPack\Readme.txt" />
+     <None Include="Assets\UControls\README.txt" />
      <None Include="Assets\ASStatisticsUIPack\Fonts\Quicksand\OFL.txt" />
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>

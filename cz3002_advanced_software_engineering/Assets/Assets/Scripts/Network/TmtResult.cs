@@ -1,6 +1,5 @@
-﻿using System.Collections;
-
-using System;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,22 +9,26 @@ namespace Game {
 		public static int TYPE_B = 1;
 		private string resultId;
 		private string nric;
-		private Time date;
+		private string date;
 		private double errorRate;
 		private double timeTaken;
 		private int type;
 
-		public TmtResult(string resultId, string nric,Time date, double timeTaken, double errorRate, int type) {
-			this.resultId = resultId;
+		public TmtResult(string result_id, string nric, double time_taken, double error_rate, int type) {
+			this.resultId = result_id;
 			this.nric = nric;
-			this.date = date;
-			this.errorRate = errorRate;
-			this.timeTaken = timeTaken;
+			this.errorRate = error_rate;
+			this.timeTaken = time_taken;
 			this.type = type;
 		}
 
 		public override string ToString() {
 			return resultId + "\t" + nric + "\t" + date + "\t" + timeTaken + "\t" + errorRate + "\t" + type;
+		}
+
+		public string Date {
+			get { return date; }
+			set { date = value; }
 		}
 
 		public void setResultId(string resultId) {
@@ -44,17 +47,8 @@ namespace Game {
 			return nric;
 		}
 
-		public void setDate(Time date) {
-			this.date = date;
-		}
-
-		public Time getDate() {
-			return date;
-		}
-
 		public void setErrorRate(double errorRate) {
 			this.errorRate = errorRate;
-
 		}
 
 		public double getErrorRate() {
@@ -79,35 +73,23 @@ namespace Game {
 
 		public static TmtResult parseResult(string x) {
 			if (x == "") return null;
-
 			string[] list = x.Split(':');
-			return new TmtResult(
-				list[0],
-				list[1],
-				parseDateTime(list[2]),
-				double.Parse(list[3]),
-				double.Parse(list[4]),
-				int.Parse(list[5])
-			);
+			TmtResult r = new TmtResult (list[0], list[1], double.Parse(list[5]), double.Parse(list[6]), int.Parse(list[7]));
+			r.Date = list[2] + ":" + list[3] + ":"  + list[4].Substring(0,2);
+			return r;
 		}
 
-		public static ArrayList parseResultList(string x) {
-			ArrayList list = new ArrayList();
+		public static List<TmtResult> parseResultList(string x) {
+			if (x.Equals("")) {
+				return null;
+			}
+
+			List<TmtResult> list = new List<TmtResult>();
 			string[] temp = x.Split('<');
 			foreach(string z in temp) {
 				list.Add(parseResult(z));
 			}
 			return list;
-
-		}
-
-		public static Time parseDateTime(string dateString) {
-			// Console.WriteLine("Input string " + dateString);
-			long value = long.Parse(dateString);
-			DateTime dt = new DateTime (value);
-
-			return new Time(); // long.Parse(dateString)
-			// return new DateTime(long.Parse(dateString));
 		}
 	}
 }
