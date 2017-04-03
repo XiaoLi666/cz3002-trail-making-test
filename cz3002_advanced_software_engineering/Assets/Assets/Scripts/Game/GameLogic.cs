@@ -106,7 +106,7 @@ namespace Game {
 				m_complete = true;
 				int type = m_type == TMT_TYPE.TMT_TYPE_A ? 0 : 1;
 				double error_rate = m_wrongCount/(m_wrongCount+25);
-				PlayerDataCollection.GetInstance ().ToSaveResult(m_wrongCount, m_timer, type);
+				PlayerDataCollection.GetInstance ().ToSaveResult(error_rate, m_timer, type);
 			}
 
 			if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Ended) {

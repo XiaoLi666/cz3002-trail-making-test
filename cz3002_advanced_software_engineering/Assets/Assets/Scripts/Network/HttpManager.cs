@@ -10,7 +10,7 @@ namespace Network {
 	public class HttpManager {
 #region attributes
 		private static HttpManager m_instance = new HttpManager();
-		private string m_url = "http://172.20.207.172:8080/tmtServerV3/HttpController";
+		private string m_url = "http://172.22.210.91:8080/tmtServerV3/HttpController";
 #endregion
 
 #region custom methods
